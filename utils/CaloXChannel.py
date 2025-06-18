@@ -330,14 +330,17 @@ def buildFERSBase(is6mm=False, boardNo=0):
             channelNo = A5202_map[ix, iy]
             if is6mm:
                 isCer = (iy % 2 == 0)
-                channel = FERSChannel(ix, -int(iy/2), ix, iy, isCer,
-                                      channelNo, boardNo)
+                channel = FERSChannel(
+                    ix, -int(iy/2), ix, iy, isCer,
+                    channelNo, boardNo)
                 channels_FERS_one_row.append(channel)
             else:
-                isCer = (ix % 2 == 1)
-                # 3mm has higher granularity in global Y
+                # 3mm boards have the same CER/SCI pattern as 6mm boards
+                # but with four times finer granularity in global Y
+                isCer = (iy % 2 == 0)
                 channel = FERSChannel(
-                    int(ix/2), -float(iy)/4, ix, iy, isCer, channelNo, boardNo)
+                    int(ix/2), -float(iy)/4, ix, iy, isCer,
+                    channelNo, boardNo)
                 channels_FERS_one_row.append(channel)
         channels_FERS.append(channels_FERS_one_row)
     return channels_FERS
